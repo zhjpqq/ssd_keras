@@ -566,7 +566,8 @@ class BatchGenerator:
                     for annotation in annotations:
                         cat_id = annotation['category_id']
                         # Check if this class is supposed to be included in the dataset.
-                        if (not self.include_classes == 'all') and (not cat_id in self.include_classes): continue
+                        if (not self.include_classes == 'all') and (not cat_id in self.include_classes):
+                            continue
                         # Transform the original class ID to fit in the sequence of consecutive IDs.
                         class_id = self.cats_to_classes[cat_id]
                         xmin = annotation['bbox'][0]
