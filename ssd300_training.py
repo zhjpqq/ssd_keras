@@ -31,7 +31,7 @@ n_classes = 20 # Number of positive classes, e.g. 20 for Pascal VOC, 80 for MS C
 scales_voc = [0.1, 0.2, 0.37, 0.54, 0.71, 0.88, 1.05] # The anchor box scaling factors used in the original SSD300 for the Pascal VOC datasets
 scales_coco = [0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05] # The anchor box scaling factors used in the original SSD300 for the MS COCO datasets
 aspect_ratios = [[1.0, 2.0, 0.5],
-                 [1.0, 2.0, 0.5, 3.0, 1.0/3.0],
+                 [1.0, 2.0, 0.5, 3.0, 1.0/3.0],  # Weight/Height: 1, 2, 1/2, 3, 1/3
                  [1.0, 2.0, 0.5, 3.0, 1.0/3.0],
                  [1.0, 2.0, 0.5, 3.0, 1.0/3.0],
                  [1.0, 2.0, 0.5],

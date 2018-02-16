@@ -166,6 +166,7 @@ def ssd_300(image_size,
     n_classes += 1 # Account for the background class.
 
     # Get a few exceptions out of the way first
+    # ratios数量与predictor_layers相同， sacels数量比predictor_layers多1
     if aspect_ratios_global is None and aspect_ratios_per_layer is None:
         raise ValueError("`aspect_ratios_global` and `aspect_ratios_per_layer` cannot both be None. At least one needs to be specified.")
     if aspect_ratios_per_layer:
@@ -186,9 +187,10 @@ def ssd_300(image_size,
     if np.any(variances <= 0):
         raise ValueError("All variances must be >0, but the variances given are {}".format(variances))
 
+    # 不同锚点框之间的距离
     if (not (steps is None)) and (len(steps) != n_predictor_layers):
         raise ValueError("You must provide at least one step value per predictor layer.")
-
+    # 锚点框距离图片左上角的偏移量
     if (not (offsets is None)) and (len(offsets) != n_predictor_layers):
         raise ValueError("You must provide at least one offset value per predictor layer.")
 
@@ -200,6 +202,8 @@ def ssd_300(image_size,
 
     # Compute the number of boxes to be predicted per cell for each predictor layer.
     # We need this so that we know how many channels the predictor layers need to have.
+    # 计算每个predictor layer上的每个cell中需要预测的盒子数量
+    # 基于这个值可以知道predictor layers需要拥有多少通道数
     if aspect_ratios_per_layer:
         n_boxes = []
         for ar in aspect_ratios_per_layer:
@@ -287,9 +291,11 @@ def ssd_300(image_size,
     conv9_2 = Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv9_2')(conv9_1)
 
     # Feed conv4_3 into the L2 normalization layer
+    # todo why？
     conv4_3_norm = L2Normalization(gamma_init=20, name='conv4_3_norm')(conv4_3)
 
     ### Build the convolutional predictor layers on top of the base network
+    #todo output_shape = height,weight 1×1?
 
     # We precidt `n_classes` confidence values for each box, hence the confidence predictors have depth `n_boxes * n_classes`
     # Output shape of the confidence layers: `(batch, height, width, n_boxes * n_classes)`

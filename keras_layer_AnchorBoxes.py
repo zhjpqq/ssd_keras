@@ -29,6 +29,8 @@ class AnchorBoxes(Layer):
     A Keras layer to create an output tensor containing anchor box coordinates
     and variances based on the input tensor and the passed arguments.
 
+    与`ssd_box_encode_decode_utils.py`功能相同，此处便于inference
+
     A set of 2D anchor boxes of different aspect ratios is created for each spatial unit of
     the input tensor. The number of anchor boxes created per unit depends on the arguments
     `aspect_ratios` and `two_boxes_for_ar1`, in the default case it is 4. The boxes
@@ -202,6 +204,7 @@ class AnchorBoxes(Layer):
                 offset_height = self.this_offsets
                 offset_width = self.this_offsets
         # Now that we have the offsets and step sizes, compute the grid of anchor box center points.
+        # 计算锚点框网格
         cy = np.linspace(offset_height * step_height, (offset_height + feature_map_height - 1) * step_height, feature_map_height)
         cx = np.linspace(offset_width * step_width, (offset_width + feature_map_width - 1) * step_width, feature_map_width)
         cx_grid, cy_grid = np.meshgrid(cx, cy)
