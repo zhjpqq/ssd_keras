@@ -24,9 +24,11 @@ from ssd_batch_generator import BatchGenerator
 img_height = 300
 img_width = 300
 
-# 1. Load a trained SSD
+# 构建一个空模型 或者 加载一个训练好的模型, 取其一运行
 
-# 1: Build the Keras model
+# 1.1. build a new SSD
+
+# 1.1.1: Build the Keras model
 
 K.clear_session() # Clear previous models from memory.
 
@@ -50,7 +52,7 @@ model = ssd_300(image_size=(img_height, img_width, 3),
                 subtract_mean=[123, 117, 104],
                 swap_channels=True)
 
-# 2: Load the trained weights into the model.
+# 1.1.2: Load the trained weights into the model.
 
 # TODO: Set the path of the trained weights.
 
@@ -58,7 +60,7 @@ weights_path = 'path/to/trained/weights/VGG_VOC0712_SSD_300x300_iter_120000.h5'
 
 model.load_weights(weights_path, by_name=True)
 
-# 3: Compile the model so that Keras won't complain the next time you load it.
+# 1.1.3: Compile the model so that Keras won't complain the next time you load it.
 
 adam = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=5e-04)
 
@@ -66,7 +68,8 @@ ssd_loss = SSDLoss(neg_pos_ratio=3, n_neg_min=0, alpha=1.0)
 
 model.compile(optimizer=adam, loss=ssd_loss.compute_loss)
 
-### 1.2. Load a trained model
+
+### 1.2 Load a trained model  加载一个训练好的模型
 
 # TODO: Set the path to the `.h5` file of the model to be loaded.
 model_path = 'path/to/trained/model.h5'
@@ -79,6 +82,7 @@ K.clear_session() # Clear previous models from memory.
 model = load_model(model_path, custom_objects={'AnchorBoxes': AnchorBoxes,
                                                'L2Normalization': L2Normalization,
                                                'compute_loss': ssd_loss.compute_loss})
+
 
 # 2. Load some images
 orig_images = [] # Store the images here.
@@ -191,22 +195,6 @@ print("Ground truth boxes:\n")
 print(np.array(batch_original_labels[i]))
 
 y_pred = model.predict(batch_X)
-
-# Decode the predictions.
-
-y_pred_decoded = decode_y(y_pred,
-                          confidence_thresh=0.5,
-                          iou_threshold=0.45,
-                          top_k=200,
-                          input_coords='centroids',
-                          normalize_coords=True,
-                          img_height=img_height,
-                          img_width=img_width)
-
-np.set_printoptions(precision=2, suppress=True, linewidth=90)
-print("Predicted boxes:\n")
-print('    class    conf  xmin    ymin    xmax    ymax')
-print(y_pred_decoded[i])
 
 # Decode the predictions.
 

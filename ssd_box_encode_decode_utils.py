@@ -844,6 +844,7 @@ class SSDBoxEncoder:
             boxes = np.expand_dims(boxes, axis=0)
             boxes = np.tile(boxes, (batch_size, 1, 1, 1, 1))
 
+            # todo todo ? reshape
             # Now reshape the 5D tensor above into a 3D tensor of shape
             # `(batch, feature_map_height * feature_map_width * n_boxes, 4)`. The resulting
             # order of the tensor content will be identical to the order obtained from the reshaping operation

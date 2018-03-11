@@ -406,6 +406,8 @@ def ssd_300(image_size,
         # Note that the original implementation performs anchor box matching inside the loss function. We don't do that.
         # Instead, we'll do it in the batch generator function.
         # The spatial dimensions are the same for the confidence and localization predictors, so we just take those of the conf layers.
+        # 生成pred_conv_layers的空间维度，以用于在训练时为match过程生成default boxes.
+        # 注意原实现中，anchor-box的match是在loss函数中进行的，此处则是在batch generator中生成。
         predictor_sizes = np.array([conv4_3_norm_mbox_conf._keras_shape[1:3],
                                      fc7_mbox_conf._keras_shape[1:3],
                                      conv6_2_mbox_conf._keras_shape[1:3],

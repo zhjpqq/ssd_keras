@@ -151,6 +151,7 @@ class AnchorBoxes(Layer):
             x (tensor): 4D tensor of shape `(batch, channels, height, width)` if `dim_ordering = 'th'`
                 or `(batch, height, width, channels)` if `dim_ordering = 'tf'`. The input for this
                 layer must be the output of the localization predictor layer.
+                x 必须是 loc 预测层的输出，这里只需要用到x的shape
         '''
 
         # Compute box width and height for each aspect ratio
